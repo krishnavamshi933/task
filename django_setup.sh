@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Install necessary packages
-apt update
-apt install python3 python3-pip python3-venv postgresql postgresql-contrib nginx -y
+sudo apt update
+sudo apt install python3 python3-pip python3-venv postgresql postgresql-contrib nginx -y
 
 # Create a virtual environment
 python3 -m venv myenv
