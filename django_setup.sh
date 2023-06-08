@@ -9,7 +9,7 @@ python3 -m venv myenv
 source myenv/bin/activate
 
 # Install Django and dependencies
-pip install django gunicorn
+sudo -H myenv/bin/pip install django gunicorn
 
 # Set up Postgres database
 sudo -u postgres psql -c "CREATE DATABASE mydatabase;"
@@ -42,7 +42,7 @@ WorkingDirectory=/path/to/myproject
 ExecStart=/path/to/myenv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/path/to/myproject.sock myproject.wsgi:application
 
 [Install]
-WantedBy=multi-user.target" > /etc/systemd/system/gunicorn.service
+WantedBy=multi-user.target" | sudo tee /etc/systemd/system/gunicorn.service
 
 # Set up Nginx
 echo "server {
@@ -58,7 +58,7 @@ echo "server {
         include proxy_params;
         proxy_pass http://unix:/path/to/myproject.sock;
     }
-}" > /etc/nginx/sites-available/myproject
+}" | sudo tee /etc/nginx/sites-available/myproject
 
-ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
-systemctl restart nginx
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+sudo systemctl restart nginx
